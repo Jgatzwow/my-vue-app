@@ -1,47 +1,60 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+<script>
+import PostForm from '@/components/PostForm.vue';
+import PostList from '@/components/PostList.vue';
+
+export default {
+  components: {
+    PostList, PostForm
+  },
+  data() {
+    return {
+      posts: [
+        {
+          id: 1, title: 'JavaScript', body: 'Post Description',
+        },
+        {
+          id: 2, title: 'JavaScript2', body: 'Post Description2',
+        },
+        {
+          id: 3, title: 'JavaScript3', body: 'Post Description3',
+        },
+        {
+          id: 4, title: 'JavaScript4', body: 'Post Description4',
+        },
+      ],
+      title: '',
+      body: ''
+    }
+  },
+  methods: {
+    createPostHandler() {
+      const newPost = {
+        id: Date.now(), title: this.title, body: this.body
+      }
+      this.posts.push(newPost)
+      this.title = ''
+      this.body = ''
+    },
+  }
+}
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <div class="app">
+    <post-form/>
+    <post-list :posts="posts"/>
+  </div>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.app {
+  padding: 20px;
 }
 </style>
