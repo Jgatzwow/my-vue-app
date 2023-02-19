@@ -2,6 +2,7 @@
 import PostForm from '@/components/PostForm.vue';
 import PostList from '@/components/PostList.vue';
 
+
 export default {
   components: {
     PostList, PostForm
@@ -22,27 +23,37 @@ export default {
           id: 4, title: 'JavaScript4', body: 'Post Description4',
         },
       ],
-      title: '',
-      body: ''
+      dialogVisible: false,
     }
   },
   methods: {
-    createPostHandler() {
-      const newPost = {
-        id: Date.now(), title: this.title, body: this.body
-      }
-      this.posts.push(newPost)
-      this.title = ''
-      this.body = ''
+    createPost(post) {
+      this.posts.push(post)
+      this.dialogVisible = false
     },
+    removePost(post) {
+      this.posts = this.posts.filter(p => p.id !== post.id)
+    },
+    showDialog() {
+      this.dialogVisible = true
+    }
   }
 }
 </script>
 
 <template>
   <div class="app">
-    <post-form/>
-    <post-list :posts="posts"/>
+    <h1>Page with posts</h1>
+    <my-button @click="showDialog">
+      Create post
+    </my-button>
+    <my-dialog v-model:show="dialogVisible">
+      <post-form @create="createPost"/>
+    </my-dialog>
+    <post-list
+        @remove="removePost"
+        :posts="posts"
+    />
   </div>
 
 </template>
