@@ -45,7 +45,21 @@ export default {
   },
   mounted() {
     this.fetchPosts()
-  }
+  },
+  computed: {
+    sortedPosts() {
+      return [...this.posts].sort((post1, post2) => {
+        return post1[this.selectedSort]?.localeCompare(post2[this.selectedSort])
+      })
+    }
+  },
+  /* watch: {
+     selectedSort(newValue) {
+       this.posts.sort((post1, post2) => {
+         return post1[newValue]?.localeCompare(post2[newValue])
+       })
+     }
+   }*/
 }
 </script>
 
@@ -65,7 +79,7 @@ export default {
     <post-list
         v-if="!isPostLoading"
         @remove="removePost"
-        :posts="posts"
+        :posts="sortedPosts"
     />
     <div v-else>Loading...</div>
   </div>
