@@ -1,29 +1,23 @@
 <script>
 import PostForm from '@/components/PostForm.vue';
 import PostList from '@/components/PostList.vue';
-
+import axios from 'axios';
 
 export default {
   components: {
+
     PostList, PostForm
   },
   data() {
     return {
-      posts: [
-        {
-          id: 1, title: 'JavaScript', body: 'Post Description',
-        },
-        {
-          id: 2, title: 'JavaScript2', body: 'Post Description2',
-        },
-        {
-          id: 3, title: 'JavaScript3', body: 'Post Description3',
-        },
-        {
-          id: 4, title: 'JavaScript4', body: 'Post Description4',
-        },
-      ],
+      posts: [],
       dialogVisible: false,
+      isPostLoading: false,
+      selectedSort: '',
+      sortedOptions: [
+        {value: 'title', name: 'By name'},
+        {value: 'body', name: 'By description'},
+      ]
     }
   },
   methods: {
@@ -36,7 +30,21 @@ export default {
     },
     showDialog() {
       this.dialogVisible = true
+    },
+    async fetchPosts() {
+      this.isPostLoading = true
+      try {
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10')
+        this.posts = response.data
+      } catch (e) {
+        alert('Error')
+      } finally {
+        this.isPostLoading = false
+      }
     }
+  },
+  mounted() {
+    this.fetchPosts()
   }
 }
 </script>
@@ -44,16 +52,22 @@ export default {
 <template>
   <div class="app">
     <h1>Page with posts</h1>
-    <my-button @click="showDialog">
-      Create post
-    </my-button>
+    <div class="app__btns">
+      <my-button @click="showDialog">
+        Create post
+      </my-button>
+      <my-select v-model="selectedSort" :options="sortedOptions"/>
+    </div>
+
     <my-dialog v-model:show="dialogVisible">
       <post-form @create="createPost"/>
     </my-dialog>
     <post-list
+        v-if="!isPostLoading"
         @remove="removePost"
         :posts="posts"
     />
+    <div v-else>Loading...</div>
   </div>
 
 </template>
@@ -67,5 +81,11 @@ export default {
 
 .app {
   padding: 20px;
+}
+
+.app__btns {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
 }
 </style>
