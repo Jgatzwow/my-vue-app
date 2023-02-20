@@ -101,9 +101,9 @@ export default {
 </script>
 
 <template>
-  <div >
+  <div>
     <h1>Page with posts</h1>
-    <my-input placeholder="Search..." v-model="searchQuery"/>
+    <my-input v-focus placeholder="Search..." v-model="searchQuery"/>
     <div class="app__btns">
       <my-button @click="showDialog">
         Create post
@@ -141,7 +141,7 @@ export default {
   margin: 10px 0;
 }
 
-.page__wrapper {
+/*.page__wrapper {
   display: flex;
   margin-top: 15px;
 }
@@ -153,7 +153,7 @@ export default {
 
 .current-page {
   border: 2px solid teal;
-}
+}*/
 
 .observer {
 

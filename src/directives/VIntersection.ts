@@ -1,7 +1,7 @@
 import type { DirectiveBinding } from "vue";
 
 export default {
-  mounted(el: HTMLDivElement, binding: DirectiveBinding) {
+  mounted(el: HTMLElement, binding: DirectiveBinding) {
     const options = {
       rootMargin: "0px",
       threshold: 1.0,
@@ -17,4 +17,5 @@ export default {
     const observer = new IntersectionObserver(callback, options);
     observer.observe(el);
   },
+  name: "intersection",
 };
